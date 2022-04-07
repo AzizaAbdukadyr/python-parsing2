@@ -16,8 +16,16 @@ def get_html(url, params=''):
 
 def get_content(html):
     soup = BeautifulSoup(html, 'html.parser')
+
+    lines_name = []
+    # heading = soup.select('.padding-bottom').get_text()
     lines_eng = []
     lines_rus = []
+    engN = soup.find_all('h2', class_='hs')
+    for i in engN:
+        i = i.text
+        lines_name.append(i)
+    # rusN = soup.select("#ru_title")
     eng = soup.find_all('span', class_='puzEng')
     rus = soup.select("#ru_text>span")
     for i in eng:
@@ -28,12 +36,18 @@ def get_content(html):
         lines_rus.append(i)
 
     lines = list(zip(lines_eng, lines_rus))
-
-    # a = []
+    lines2 = list(lines_name)
+    # print(heading)
+    for i in lines2:
+        print(f'Песня:{i}\n')
     for i in lines:
         print(f'{i[0]}\n{i[1]}')
         continue
     with open("data.txt", 'w') as song:
+        # for i in lines2:
+        #     song.write(f'Песня:{i}\n')
+            # song.write(f'{i[1]}\n')
+
         for i in lines:
             song.write(f'{i[0]}\n')
             song.write(f'{i[1]}\n')
